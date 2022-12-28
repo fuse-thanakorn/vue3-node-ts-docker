@@ -2,11 +2,28 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import ApplicationError from './errors/application-error';
 import routes from './routes';
 import logger from './logger';
 
 const app = express();
+
+const allowedOrigins = ['http://localhost:8080'];
+
+const options: cors.CorsOptions = {
+  allowedHeaders: [
+    // 'Origin'
+    // 'X-Requested-With',
+    // 'Content-Type',
+    // 'Accept',
+    // 'X-Access-Token'
+  ],
+  // credentials: true,
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+  // preflightContinue: false,
+  origin: allowedOrigins
+};
 
 function logResponseTime(req: Request, res: Response, next: NextFunction) {
   const startHrTime = process.hrtime();
@@ -30,7 +47,7 @@ app.use(logResponseTime);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(cors(options));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 app.use(routes);
