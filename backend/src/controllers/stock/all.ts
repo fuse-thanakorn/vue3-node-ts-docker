@@ -10,7 +10,7 @@ const response = {
 const all: RequestHandler = async (req, res) => {
   try {
     const { data, status } = await axios.get(
-      'https://xstorage.googleapis.com/finno-ex-re-v2-static-staging/recruitment-test/fund-ranking-1Y.json',
+      'https://storage.googleapis.com/finno-ex-re-v2-static-staging/recruitment-test/fund-ranking-1Y.json',
     );
 
     return res.status(status).send({
