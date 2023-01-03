@@ -1,3 +1,10 @@
+import dotenv from 'dotenv';
+/* eslint-disable import/first */
+const result = dotenv.config();
+if (result.error) {
+  dotenv.config({ path: '.env.default' });
+}
+
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import path from 'path';
@@ -8,8 +15,10 @@ import routes from './routes';
 import logger from './logger';
 
 const app = express();
+const CORS_ALLOW = process.env?.CORS_ALLOW || '';
+const CORS_LIST = CORS_ALLOW.split(',');
 
-const allowedOrigins = ['http://localhost:8080'];
+const allowedOrigins = CORS_LIST;
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
