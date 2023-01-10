@@ -4,20 +4,20 @@ import { defineStore } from 'pinia'
 // Import axios to make HTTP requests
 import axios from '~/modules/axios'
 
-export const useUsersStore = defineStore('users', {
+export const useStocksStore = defineStore('users', {
   state: () => ({
-    users: [],
+    stocks: [],
   }),
   getters: {
     getUsers(state) {
-      return state.users
+      return state.stocks
     },
   },
   actions: {
-    async fetchUsers() {
+    async fetchStocks() {
       try {
         const data = await axios.get('/stock/all')
-        this.users = data.data
+        this.stocks = data.data
       }
       catch (error) {
         // eslint-disable-next-line no-console
