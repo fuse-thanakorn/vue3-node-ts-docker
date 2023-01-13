@@ -60,6 +60,7 @@ const { t } = useI18n()
 </template>
 
 <route lang="yaml">
+222
 meta:
   layout: home
 </route>

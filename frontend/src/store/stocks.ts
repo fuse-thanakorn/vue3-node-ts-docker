@@ -9,23 +9,21 @@ export const useStocksStore = defineStore('users', {
     stocks: [],
   }),
   getters: {
-    getUsers(state) {
+    getStocks(state) {
       return state.stocks
     },
   },
   actions: {
     async fetchStocks() {
       try {
-        const data = await axios.get('/stock/all')
-        this.stocks = data.data
+        const res = await axios.get('/stock/all')
+        this.stocks = res.data.stock.data
       }
       catch (error) {
         // eslint-disable-next-line no-console
         console.log(error)
       }
     },
-    test() {
-      console.log('x')
-    },
+
   },
 })
