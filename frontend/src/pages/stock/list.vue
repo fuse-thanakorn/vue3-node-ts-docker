@@ -34,14 +34,15 @@ const headers = ref<any[]>([
 const query = reactive<queryType>({
   pageSize: 5,
   pageNumber: 1,
-  startDate: null,
-  endDate: null,
+  startDate: DateTime.now().plus({ years: -2 }).startOf('day').toISO(),
+  endDate: DateTime.now().startOf('day').toISO(),
 })
 const fetchStocks = async () => await stocks.fetchStocks(query)
-const paginate = (page: number) => console.log('page :>> ', page)
+const paginate = (page: number) => query.pageNumber = page
 watchEffect(() => {
-  console.log(query)
-})
+  if (query)
+    fetchStocks()
+}, { deep: true })
 </script>
 
 <template>
@@ -227,7 +228,7 @@ watchEffect(() => {
             >
           </div>
         </div>
-        <TheTables :headers="headers" :items="stockList" @pagination="paginate" />
+        <TheTables :headers="headers" :items="stockList" :page="query.pageNumber" @pagination="paginate" />
       </div>
     </div>
 
