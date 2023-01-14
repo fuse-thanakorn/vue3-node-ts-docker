@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, reactive, ref, watchEffect } from 'vue'
 import { DateTime, Settings } from 'luxon'
 import { useStocksStore } from '~/store/stocks.js'
 
 const router = useRouter()
 const { t } = useI18n()
-
+interface queryType {
+  pageSize: number
+  pageNumber: number
+  startDate?: string | null // ISO type
+  endDate?: string | null // ISO type
+}
 const stocks = useStocksStore()
 const stockList = computed(() => {
   let stockItems: any[] = stocks.stocks
@@ -26,10 +31,16 @@ const headers = ref<any[]>([
   { label: 'Performance', value: 'avg_return' },
   { label: 'Updated date', value: 'nav_date' },
 ])
-const onStocksClick = async () => await stocks.fetchStocks()
-
+const query = reactive<queryType>({
+  pageSize: 5,
+  pageNumber: 1,
+  startDate: null,
+  endDate: null,
+})
+const fetchStocks = async () => await stocks.fetchStocks(query)
+const paginate = (page: number) => console.log('page :>> ', page)
 watchEffect(() => {
-
+  console.log(query)
 })
 </script>
 
@@ -216,11 +227,11 @@ watchEffect(() => {
             >
           </div>
         </div>
-        <TheTables :headers="headers" :items="stockList" />
+        <TheTables :headers="headers" :items="stockList" @pagination="paginate" />
       </div>
     </div>
 
-    <button btn m="3 t6" text-md @click="onStocksClick">
+    <button btn m="3 t6" text-md @click="fetchStocks">
       Fetch User Click !
     </button>
 

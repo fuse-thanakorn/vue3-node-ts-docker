@@ -14,10 +14,11 @@ export const useStocksStore = defineStore('users', {
     },
   },
   actions: {
-    async fetchStocks() {
+    async fetchStocks(query: {}) {
       try {
-        const res = await axios.get('/stock/all')
-        this.stocks = res.data.stock.data
+        const res = await axios.get('/stock', { params: query })
+
+        this.stocks = res.data.stocks.data
       }
       catch (error) {
         // eslint-disable-next-line no-console

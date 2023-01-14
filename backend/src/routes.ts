@@ -18,7 +18,7 @@ router.get('/book/search', BookController.search);
 router.get('/book/id/:bookId', BookController.get);
 router.delete('/book/id/:bookId', BookController.remove);
 // Stock routes
-router.get('/stock/all', StockController.all);
+router.get('/stock', StockController.get);
 
 // Dev routes
 if (process.env.NODE_ENV === 'development') {
