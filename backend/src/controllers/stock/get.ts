@@ -13,11 +13,13 @@ interface responseType {
   status: number;
   error: string;
   data: any[] ;
+  total: number ;
 };
 const response: responseType = {
   status: 500,
   error: '',
-  data: []
+  data: [],
+  total: 0
 };
 function paginate(array: any[], pageSize: number, pageNumber: number) {
   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
@@ -46,6 +48,7 @@ const all: RequestHandler = async (
     const size = pageSize || 10;
     const page = pageNumber || 1;
     let stocks: any[] = data.data || [];
+    const total: number = data.data.length;
     if (startDate && endDate) {
       const start = startDate || DateTime.now().plus({ months: -1 }).toISO();
       const end = endDate || DateTime.now().toISO();
@@ -54,6 +57,7 @@ const all: RequestHandler = async (
 
     stocks = paginate(stocks, size, page);
     response.data = stocks;
+    response.total = total;
     response.status = status;
     return res.status(status).send({
       stocks: response
